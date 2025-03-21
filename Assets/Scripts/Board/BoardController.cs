@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Board;
 using Event;
-using Unity.VisualScripting;
+
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+
 
 public class BoardController : MonoBehaviour
 {
+    
+    [SerializeField] private MatrixBuilder matrixBuilder;
     private int[,] matrix = new int[3, 3];
     
     public int[,] Matrix => matrix;
@@ -16,10 +19,11 @@ public class BoardController : MonoBehaviour
     private Item firstItem;
     private Item secondItem;
 
-    [SerializeField]private LineSearching lineSearching;
+    // [SerializeField]private LineSearching lineSearching;
     [SerializeField]private LineRenderer line;
-   
-
+    
+    public int Counter => counter;
+    private int counter;
     private void Update()
     {
         ChooseItem();
@@ -62,15 +66,15 @@ public class BoardController : MonoBehaviour
                         }
                         
                         
-                        if (lineSearching.CheckConnectItem(firstItem.PairIndex, secondItem.PairIndex, matrix))
+                        if (LineSearching.CheckConnectItem(firstItem.PairIndex, secondItem.PairIndex, matrix))
                         {
                             //Show Line 
-                            ShowLine(lineSearching.tracking);
+                            ShowLine(LineSearching.tracking);
                             StartCoroutine(DelayDisactive());
-                         
-                            
-                            
-                            
+
+                           
+
+
                         }
                         else
                         {
@@ -78,6 +82,7 @@ public class BoardController : MonoBehaviour
                             secondItem.TurnOffPOutLine();
                             firstItem = null;
                             secondItem = null;
+                           
                            
                         }
                         
@@ -99,6 +104,7 @@ public class BoardController : MonoBehaviour
         firstItem = null;
         secondItem = null;
         line.enabled = false;
+        counter-=2;
     }
 
     private void ShowLine(List<PairIndex> lineSearchingTracking)
@@ -142,5 +148,34 @@ public class BoardController : MonoBehaviour
                 matrix[i, j] = ints[i - 1, j - 1];
             }
         }
+        counter = rows * cols;
+    }
+
+    public void ResetMatrix()
+    {
+        matrix = ResetBoard.GetRandomNewMatrix(matrix);
+        matrixBuilder.SetNewMatrix(matrix);
+        
+    }
+
+    public void SuggestItem()
+    {
+        if(counter == 0 ) return;
+        List<PairIndex> suggestion = Suggest.GetSuggest(matrix);
+       
+        while (suggestion.Count == 0)
+        {
+            ResetMatrix();
+            suggestion = Suggest.GetSuggest(matrix);
+        }
+        firstItem = matrixBuilder.GetItem(suggestion[0], matrix[suggestion[0].First, suggestion[0].Second]);
+        secondItem = matrixBuilder.GetItem(suggestion[1], matrix[suggestion[1].First, suggestion[1].Second]);
+        firstItem.TurnOnPOutLine();
+        secondItem.TurnOnPOutLine();
+        ShowLine(LineSearching.tracking);
+        StartCoroutine(DelayDisactive());
+
+        
+        
     }
 }

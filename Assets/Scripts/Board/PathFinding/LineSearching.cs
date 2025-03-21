@@ -6,11 +6,11 @@ using UnityEngine;
 public class LineSearching : MonoBehaviour
 {
     
-    public List<PairIndex> tracking  = new List<PairIndex>();
+    public static List<PairIndex> tracking  = new List<PairIndex>();
     
   
 
-    public bool CheckConnectItem(PairIndex item1,  PairIndex item2, int[,] matrix)
+    public static bool CheckConnectItem(PairIndex item1,  PairIndex item2, int[,] matrix)
     {
         
        
@@ -46,7 +46,7 @@ public class LineSearching : MonoBehaviour
         return false;
     }
 
-    public bool CheckThreeLinesSameDirection(PairIndex item1, PairIndex item2, int[,] matrix)
+    public static bool CheckThreeLinesSameDirection(PairIndex item1, PairIndex item2, int[,] matrix)
     {
         bool result = false;
 
@@ -88,7 +88,7 @@ public class LineSearching : MonoBehaviour
         }
         return false;
     }
-    public bool checkSameDirectionY(int tmp,  PairIndex item1, PairIndex item2, int[,] matrix)
+    public static bool checkSameDirectionY(int tmp,  PairIndex item1, PairIndex item2, int[,] matrix)
     {
        
         bool result = CheckOneLine(new PairIndex(item1.First, tmp), new PairIndex(item2.First,tmp), matrix);
@@ -103,7 +103,7 @@ public class LineSearching : MonoBehaviour
         }
         return result;
     }
-    public bool checkSameDirectionX(int tmp,  PairIndex item1, PairIndex item2, int[,] matrix)
+    public static bool checkSameDirectionX(int tmp,  PairIndex item1, PairIndex item2, int[,] matrix)
     {
        
         bool result = CheckOneLine(new PairIndex(tmp, item1.Second), new PairIndex(tmp,item2.Second), matrix);
@@ -119,7 +119,7 @@ public class LineSearching : MonoBehaviour
         return result;
     }
     
-    public bool CheckThreeLines(PairIndex item1, PairIndex item2, int[,] matrix)
+    public static bool CheckThreeLines(PairIndex item1, PairIndex item2, int[,] matrix)
     {
         int rows = matrix.GetLength(0);
         int cols = matrix.GetLength(1);
@@ -228,7 +228,7 @@ public class LineSearching : MonoBehaviour
 
 
 
-    public bool CheckFourPoint(PairIndex item1, PairIndex item2, PairIndex mid1, PairIndex mid2, int[,] matrix)
+    public static bool CheckFourPoint(PairIndex item1, PairIndex item2, PairIndex mid1, PairIndex mid2, int[,] matrix)
     {
         if (matrix[mid1.First, mid1.Second] != -1) return false;
         if (matrix[mid2.First, mid2.Second] != -1) return false;
@@ -253,7 +253,7 @@ public class LineSearching : MonoBehaviour
     
 
 
-    public bool CheckTwoLines(PairIndex item1, PairIndex item2, int[,] matrix)
+    public static bool CheckTwoLines(PairIndex item1, PairIndex item2, int[,] matrix)
     {
        
         PairIndex midPair1 = new PairIndex(item2.First, item1.Second);
@@ -283,7 +283,7 @@ public class LineSearching : MonoBehaviour
     
     
 
-    public bool CheckOneLine(PairIndex item1,  PairIndex item2, int[,] matrix)
+    public static bool CheckOneLine(PairIndex item1,  PairIndex item2, int[,] matrix)
     {
         
         

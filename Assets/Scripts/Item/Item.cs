@@ -34,7 +34,7 @@ public class Item : MonoBehaviour
     {
         pairIndex = new PairIndex(first, second);
    
-        Debug.Log(pairIndex);
+       
     }
     private void Start()
     {

@@ -4,5 +4,8 @@ namespace Event
     {
         public delegate void GetDataBoardEvent(int[,] matrix);
         public static GetDataBoardEvent GetData; 
+        
+        
+        
     }
 }
