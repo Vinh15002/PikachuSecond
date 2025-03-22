@@ -18,6 +18,8 @@ public struct PairIndex
     {
         return "Fist: " + First + "  Second: " + Second;
     }
+
+    
 }
 public class Item : MonoBehaviour
 {

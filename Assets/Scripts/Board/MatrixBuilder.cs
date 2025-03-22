@@ -126,4 +126,46 @@ public class MatrixBuilder : MonoBehaviour
         }
         return null;
     }
+
+
+    public void GenerateNewMatrix()
+    {
+        foreach (var data in datas)
+        {
+            foreach(var item in data.Value)
+            {
+                item.GetComponent<Item>().TurnOffPOutLine();
+                item.SetActive(false);
+            }
+        }
+        GenerateMatrix();
+        for (int i = 0; i < row; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                
+                
+                
+                int index = 0;
+                List<GameObject> items = datas[matrix[i, j]];
+                
+                    
+                while (items[index].activeSelf != false) index++;
+                GameObject item = items[index];
+                item.GetComponent<Item>().SetIndex(matrix[i,j]);
+                item.GetComponent<Item>().SetPair(i+1, j+1);
+            
+               
+                item.transform.localPosition = new Vector3(j, i, 0);
+                item.SetActive(true);
+                    
+                    
+                
+               
+                
+                
+            }
+        }
+        BoardEvent.GetData?.Invoke(matrix);
+    }
 }

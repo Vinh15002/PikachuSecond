@@ -7,8 +7,18 @@ using Event;
 using UnityEngine;
 
 
+
+public enum TypeGame
+{
+    Normal, 
+    Special01,
+    Special02,
+}
+
 public class BoardController : MonoBehaviour
 {
+    
+    [SerializeField] private TypeGame typeGame = TypeGame.Normal;
     
     [SerializeField] private MatrixBuilder matrixBuilder;
     private int[,] matrix = new int[3, 3];
@@ -98,13 +108,26 @@ public class BoardController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         firstItem.transform.gameObject.SetActive(false);
         secondItem.transform.gameObject.SetActive(false);
-        
+        //Get Pair Index
+
+        PairIndex item1Pair = firstItem.PairIndex;
+        PairIndex item2Pair = secondItem.PairIndex;
         matrix[firstItem.PairIndex.First, firstItem.PairIndex.Second] = -1;
         matrix[secondItem.PairIndex.First, secondItem.PairIndex.Second] = -1;
         firstItem = null;
         secondItem = null;
         line.enabled = false;
         counter-=2;
+        if (typeGame == TypeGame.Special01)
+        {
+            matrix = ResetBoard.GetType2Matrix(item1Pair,  item2Pair, this.matrix);
+            matrixBuilder.SetNewMatrix(matrix);
+        }
+        else if (typeGame == TypeGame.Special02)
+        {
+            matrix = ResetBoard.GetType3Matrix(item1Pair,  item2Pair, this.matrix);
+            matrixBuilder.SetNewMatrix(matrix);
+        }
     }
 
     private void ShowLine(List<PairIndex> lineSearchingTracking)
@@ -177,5 +200,24 @@ public class BoardController : MonoBehaviour
 
         
         
+    }
+
+    public void ResetNewBoard()
+    {
+        matrixBuilder.GenerateNewMatrix();
+    }
+
+    public void SetNewTypeGame(TypeGame special01)
+    {
+        if (special01 == TypeGame.Special01)
+        {
+            matrixBuilder.GenerateNewMatrix();
+            this.typeGame = TypeGame.Special01; 
+        }
+        else if (special01 == TypeGame.Special02)
+        {
+            matrixBuilder.GenerateNewMatrix();
+            this.typeGame = TypeGame.Special02;
+        }
     }
 }
